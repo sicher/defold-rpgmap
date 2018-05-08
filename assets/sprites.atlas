@@ -1,0 +1,26 @@
+animations {
+  id: "hero-walk"
+  images {
+    image: "/assets/hero-2.png"
+  }
+  images {
+    image: "/assets/hero-1.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 10
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "hero-idle"
+  images {
+    image: "/assets/hero-1.png"
+  }
+  playback: PLAYBACK_NONE
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 1
+inner_padding: 0

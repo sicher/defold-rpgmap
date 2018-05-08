@@ -1,0 +1,64 @@
+local scroll_speed = 0.5
+
+function init(self)
+	-- use the x and y component to track where we are.
+	self.screen_pos = vmath.vector3(0, 0, 0)
+	self.prev_screen = nil
+	self.current_screen = nil
+	self.loading = false
+	self.dir = nil
+	msg.post("#", "load_screen", { dir = hash("center") })
+end
+
+local positions = { [hash("center")] = vmath.vector3(),
+					[hash("up")] = vmath.vector3(0, 768, 0),
+					[hash("down")] = vmath.vector3(0, -768, 0),
+					[hash("right")] = vmath.vector3(1280, 0, 0),
+					[hash("left")] = vmath.vector3(-1280, 0, 0) }
+
+local function done(self)
+	self.loading = false
+	msg.post("/hero#script", "enter_screen", { dir = self.dir })
+	if self.prev_screen then
+		go.delete(self.prev_screen)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("load_screen") and not self.loading then
+		self.loading = true
+		self.prev_screen = self.current_screen
+		self.dir = message.dir
+		
+		if message.dir == hash("up") then
+			self.screen_pos.y = self.screen_pos.y + 1
+		elseif message.dir == hash("down") then
+			self.screen_pos.y = self.screen_pos.y - 1
+		elseif message.dir == hash("right") then
+			self.screen_pos.x = self.screen_pos.x + 1
+		elseif message.dir == hash("left") then
+			self.screen_pos.x = self.screen_pos.x - 1
+		end
+		
+		-- what screen to spawn
+		local f = "#factory-" .. self.screen_pos.x .. "-" .. self.screen_pos.y
+		
+		-- where?
+		local p = positions[message.dir]
+		self.current_screen = collectionfactory.create(f, p)
+
+		msg.post("/hero#collider", "disable")
+		
+		-- scroll out prev and in new, if there is one.
+		if self.prev_screen then
+			local proot = self.prev_screen[hash("/root")]
+			local croot = self.current_screen[hash("/root")]
+			go.animate(proot, "position", go.PLAYBACK_ONCE_FORWARD, -p, go.EASING_LINEAR, scroll_speed, 0)
+			go.animate(croot, "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(), go.EASING_LINEAR, scroll_speed, 0)
+			local hp = go.get_position("/hero")
+			go.animate("/hero", "position", go.PLAYBACK_ONCE_FORWARD, hp-p, go.EASING_LINEAR, scroll_speed, 0, done)
+		else
+			done(self)
+		end
+	end
+end
