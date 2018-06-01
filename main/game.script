@@ -58,6 +58,7 @@ function on_message(self, message_id, message, sender)
 			local hp = go.get_position("/hero")
 			go.animate("/hero", "position", go.PLAYBACK_ONCE_FORWARD, hp-p, go.EASING_LINEAR, scroll_speed, 0, done)
 		else
+			-- first screen. no animation needed
 			done(self)
 		end
 	end
