@@ -2454,14 +2454,14 @@ layers {
   cell {
     x: 16
     y: 10
-    tile: 136
+    tile: 141
     h_flip: 0
     v_flip: 0
   }
   cell {
     x: 17
     y: 10
-    tile: 137
+    tile: 141
     h_flip: 0
     v_flip: 0
   }
@@ -2522,16 +2522,9 @@ layers {
     v_flip: 0
   }
   cell {
-    x: 16
-    y: 11
-    tile: 117
-    h_flip: 0
-    v_flip: 0
-  }
-  cell {
     x: 17
     y: 11
-    tile: 118
+    tile: 141
     h_flip: 0
     v_flip: 0
   }

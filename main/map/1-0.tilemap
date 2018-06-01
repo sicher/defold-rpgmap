@@ -1950,7 +1950,7 @@ layers {
   cell {
     x: 1
     y: 3
-    tile: 83
+    tile: 102
     h_flip: 0
     v_flip: 0
   }
@@ -2049,13 +2049,6 @@ layers {
     x: 0
     y: 4
     tile: 142
-    h_flip: 0
-    v_flip: 0
-  }
-  cell {
-    x: 1
-    y: 4
-    tile: 64
     h_flip: 0
     v_flip: 0
   }

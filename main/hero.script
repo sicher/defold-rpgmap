@@ -9,17 +9,25 @@ function init(self)
 	self.input = vmath.vector3()
 	self.pp = vmath.vector3()
 	self.velocity = vmath.vector3()
+	self.facing = vmath.vector3(0, -1, 0)
 	self.correction = vmath.vector3()
 end
 
 local function anim(self)
-	local a = self.anim
-	if vmath.length_sqr(self.velocity) > 0.01 then
-		a = hash("hero-walk")
-	else
-		a = hash("hero-idle")
+	local f = "hero-front"
+	if self.facing.y > 0 then
+		f = "hero-back"
+	elseif self.facing.x > 0 then
+		f = "hero-right"
+	elseif self.facing.x < 0 then
+		f = "hero-left"
 	end
-	print(self.velocity)
+	
+	local a = hash(f .. "-idle")
+	local moving = vmath.length_sqr(self.velocity) > 0.01
+	if moving then
+		a = hash(f .. "-walk")
+	end
 
 	if a ~= self.anim then
 		self.anim = a
@@ -32,10 +40,14 @@ function update(self, dt)
 		self.input = vmath.normalize(self.input)
 	end
 
+	if vmath.length_sqr(self.input) > 0 then
+		self.facing = self.input
+	end
+	
 	anim(self)
 
 	local p = go.get_position()
-	local newp = p + self.input * 100 * dt
+	local newp = p + self.input * 150 * dt
 	go.set_position(newp)
 
 	-- edges
@@ -50,7 +62,7 @@ function update(self, dt)
 	end
 
 	self.velocity = p - self.pp		
-	self.pp = p		
+	self.pp = p
 	self.input = vmath.vector3()
 	self.correction = vmath.vector3()
 end
@@ -69,7 +81,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("enter_screen") then
 		local p = go.get_position()
 		local dp = enters[message.dir]
-		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, p+dp, go.EASING_LINEAR, 0.5, 0, activate)
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, p+dp, go.EASING_LINEAR, 0.3, 0, activate)
 	elseif message_id == hash("contact_point_response") then
 		local proj = vmath.dot(self.correction, message.normal)
 		local comp = (message.distance - proj) * message.normal

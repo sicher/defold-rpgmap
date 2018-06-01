@@ -1796,14 +1796,14 @@ layers {
   cell {
     x: 17
     y: 1
-    tile: 145
+    tile: 146
     h_flip: 0
     v_flip: 0
   }
   cell {
     x: 18
     y: 1
-    tile: 145
+    tile: 147
     h_flip: 0
     v_flip: 0
   }
@@ -1843,9 +1843,23 @@ layers {
     v_flip: 0
   }
   cell {
-    x: 17
+    x: 16
     y: 2
     tile: 145
+    h_flip: 0
+    v_flip: 0
+  }
+  cell {
+    x: 17
+    y: 2
+    tile: 127
+    h_flip: 0
+    v_flip: 0
+  }
+  cell {
+    x: 18
+    y: 2
+    tile: 128
     h_flip: 0
     v_flip: 0
   }
@@ -1902,6 +1916,13 @@ layers {
     x: 10
     y: 3
     tile: 40
+    h_flip: 0
+    v_flip: 0
+  }
+  cell {
+    x: 17
+    y: 3
+    tile: 145
     h_flip: 0
     v_flip: 0
   }
