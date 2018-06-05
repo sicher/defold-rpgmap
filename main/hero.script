@@ -1,10 +1,8 @@
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	msg.post("#collider", "disable")
-
+	
 	self.anim = nil
-
-	self.entering = false
 	
 	self.input = vmath.vector3()
 	self.pp = vmath.vector3()
@@ -50,7 +48,7 @@ function update(self, dt)
 	local newp = p + self.input * 150 * dt
 	go.set_position(newp)
 
-	-- edges
+	-- trigger load at screen edges
 	if newp.y > 768 then
 		msg.post("/game#script", "load_screen", { dir = hash("up") })
 	elseif newp.y < 0 then
@@ -74,15 +72,20 @@ local enters = { [hash("center")] = vmath.vector3(0, 0, 0),
 				 [hash("left")] = vmath.vector3(-32, 0, 0) }
 
 local function activate(self)
+	msg.post(".", "acquire_input_focus")					
 	msg.post("#collider", "enable")
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("enter_screen") then
+		-- don't allow player to mess with input while hero walks into screen.
+		msg.post(".", "release_input_focus")					
+		-- animate in from the edge into next screen, then activate.
 		local p = go.get_position()
 		local dp = enters[message.dir]
 		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, p+dp, go.EASING_LINEAR, 0.3, 0, activate)
 	elseif message_id == hash("contact_point_response") then
+		-- simple collision solver
 		local proj = vmath.dot(self.correction, message.normal)
 		local comp = (message.distance - proj) * message.normal
 		self.correction = self.correction + comp

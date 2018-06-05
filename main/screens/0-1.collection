@@ -1,7 +1,49 @@
 name: "default"
+instances {
+  id: "bee_1"
+  prototype: "/main/bee/bee.go"
+  position {
+    x: 382.0
+    y: 561.0
+    z: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "bee_2"
+  prototype: "/main/bee/bee.go"
+  position {
+    x: 439.0
+    y: 620.0
+    z: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "root"
+  children: "bee_1"
+  children: "bee_2"
   children: "map"
   data: ""
   position {
